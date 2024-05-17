@@ -1,8 +1,8 @@
-package interface
+// package interface
 
-import "fmt"
+// import "fmt"
 
-// Interface defines a behavior
-type Runner interface {
+// // Interface defines a behavior
+// type Runner interface {
     
-}
+// }
