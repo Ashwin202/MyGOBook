@@ -1,7 +1,3 @@
-Here’s a README for your PWA, MyGOBook, hosted on Firebase:
-
----
-
 # MyGOBook
 
 Welcome to MyGOBook, a Progressive Web App (PWA) designed to provide study materials, including notes on Golang. This app offers a clean user interface and offline capabilities, making it easier for you to access study resources anytime, anywhere.
