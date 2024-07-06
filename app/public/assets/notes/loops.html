@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+ <body>
+    <h1>Loops in Go</h1>
+    <hr>
+    <h2>Introduction</h2>
+    <p>Loops in Go provide mechanisms for iterating over collections or executing code repeatedly based on certain conditions. Go offers several types of loops to accommodate different programming needs.</p>
+
+    <h2>Basic Loops</h2>
+
+    <h3>1. For Loop</h3>
+    <p>The <code>for</code> loop in Go is versatile and supports various forms:</p>
+    <pre><code>package loops
+
+import "fmt"
+
+func BasicLoops() {
+    // Normal for loop
+    for i := 0; i &lt; 10; i++ {
+        fmt.Println(i)
+    }
+
+    // While loop equivalent
+    j := 0
+    for j &lt; 10 {
+        fmt.Println(j)
+        j++
+    }
+
+    // Infinite loop (break condition needed to exit)
+    k := 0
+    for {
+        fmt.Println("Infinite loop")
+        k++
+        if k == 5 {
+            break
+        }
+    }
+
+    // Using range to iterate over collections (arrays, slices, maps, etc.)
+    nums := []int{1, 2, 3, 4, 5}
+    for index, value := range nums {
+        fmt.Printf("Index: %d, Value: %d\n", index, value)
+    }
+
+    // Skipping iteration with continue
+    for m := 0; m &lt; 5; m++ {
+        if m == 3 {
+            continue
+        }
+        fmt.Println("Skipping 3:", m)
+    }
+}</code></pre>
+
+    <h3>Explanation:</h3>
+    <ul>
+        <li><strong>Normal For Loop:</strong> Executes a block of code repeatedly until a condition is met (<code>i &lt; 10</code>), with an increment or decrement (<code>i++</code>).</li>
+        <li><strong>While Loop Equivalent:</strong> Uses a <code>for</code> loop with only a condition (<code>j &lt; 10</code>), behaving like a <code>while</code> loop in other languages.</li>
+        <li><strong>Infinite Loop:</strong> Demonstrates an infinite loop with <code>for {}</code>, usually used with a break condition (<code>if k == 5</code>) to exit.</li>
+        <li><strong>Range Loop:</strong> Iterates over elements of a collection (<code>nums</code> slice) using the <code>range</code> keyword, providing both index and value for each iteration.</li>
+        <li><strong>Skipping Iteration with <code>continue</code>:</strong> Skips iterations based on a condition (<code>if m == 3</code>) using <code>continue</code>.</li>
+    </ul>
+
+    <h2>Key Features of Go's Loop Constructs:</h2>
+    <ul>
+        <li><strong>No <code>do-while</code> Loop:</strong> Go does not have a <code>do-while</code> loop, but you can simulate it with a <code>for</code> loop and a break condition.</li>
+        <li><strong>Range-Based Iteration:</strong> Simplifies iterating over arrays, slices, maps, and channels with the <code>range</code> keyword.</li>
+        <li><strong>Versatility:</strong> The <code>for</code> loop in Go is highly flexible, supporting traditional loop constructs and specialized forms like iterating over collections with <code>range</code>.</li>
+    </ul>
+
+ </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./js/main.js"></script>
+
+</html>
