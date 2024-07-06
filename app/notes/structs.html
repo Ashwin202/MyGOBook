@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body>
+    <h1>Structs in Go</h1>
+    <hr>
+    <h2>Introduction</h2>
+
+    <p>In Go, structs are composite data types that allow you to group together different types of data into a single
+        unit. They are similar to classes in other object-oriented languages but are more lightweight and flexible.</p>
+
+    <h2>Defining a Struct</h2>
+
+    <p>You define a new struct using the <code>type</code> and <code>struct</code> keywords:</p>
+
+    <pre><code>type Person struct {
+    Name string
+    Age  int
+}</code></pre>
+
+    <p>Here, <code>Person</code> is the name of the struct, and it contains two fields: <code>Name</code> of type
+        <code>string</code> and <code>Age</code> of type <code>int</code>.</p>
+
+    <h3>Creating Instances of a Struct</h3>
+
+    <p>To create an instance of a struct, you can initialize it with values for its fields:</p>
+
+    <pre><code>func main() {
+    // Creating a new Person instance
+    var john Person
+    john.Name = "John Doe"
+    john.Age = 30
+
+    // Accessing and modifying fields
+    fmt.Printf("%s is %d years old.\n", john.Name, john.Age)
+
+    // Creating another Person instance using a struct literal
+    jane := Person{Name: "Jane Smith", Age: 25}
+    fmt.Printf("%s is %d years old.\n", jane.Name, jane.Age)
+}</code></pre>
+
+    <h2>Structs with Pointers</h2>
+
+    <p>Structs can also be used with pointers, which allows you to pass references to the struct instead of copying it:
+    </p>
+
+    <pre><code>func modifyPerson(p *Person) {
+    p.Age = 40 // Changes the age of the person through the pointer
+}
+
+func main() {
+    var john Person
+    john.Name = "John Doe"
+    john.Age = 30
+
+    modifyPerson(&john) // Passes a pointer to the Person instance
+    fmt.Printf("%s is now %d years old.\n", john.Name, john.Age)
+}</code></pre>
+
+    <h2>Real-World Use Cases</h2>
+
+    <h3>Database Records</h3>
+
+    <p>Structs are commonly used to represent rows from a database:</p>
+
+    <pre><code>type Employee struct {
+    ID        int
+    Name      string
+    Department string
+    Salary    float64
+}
+
+func main() {
+    // Retrieving an employee record from a database
+    employee := Employee{
+        ID:        1,
+        Name:      "Alice",
+        Department: "Engineering",
+        Salary:    75000,
+    }
+
+    // Use the employee data for various operations
+}</code></pre>
+
+    <h3>Configuration Settings</h3>
+
+    <p>Structs can also be used to manage configuration settings in applications:</p>
+
+    <pre><code>type Config struct {
+    Port     int
+    Database string
+    Username string
+    Password string
+}
+
+func loadConfig() Config {
+    // Load configuration from file or environment variables
+    return Config{
+        Port:     8080,
+        Database: "mysql",
+        Username: "user",
+        Password: "password",
+    }
+}
+
+func main() {
+    config := loadConfig()
+
+    // Use configuration settings in the application
+}</code></pre>
+
+    <h2>Conclusion</h2>
+
+    <p>Structs are fundamental to organizing and representing data in Go programs. They provide a flexible way to group
+        related data together and are widely used in various domains such as database operations, configuration
+        management, and more.</p>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="./js/main.js"></script>
+
+</html>

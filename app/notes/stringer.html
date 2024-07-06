@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+ <body>
+    <div class="container mt-5">
+        <h1 class="mb-4">fmt.Stringer Interface in Go</h1>
+        <hr>
+        <h2>Introduction</h2>
+        <p>
+            In Go, the <code>fmt.Stringer</code> interface is used to define a way to convert a value to its string representation. This interface is particularly useful because it allows for a consistent way to output custom string representations for different types, which can be especially helpful for debugging, logging, or displaying user-friendly messages.
+        </p>
+
+        <h2>The fmt.Stringer Interface</h2>
+        <p>
+            The <code>fmt.Stringer</code> interface is very simple, consisting of only one method:
+        </p>
+        <pre><code>type Stringer interface {
+    String() string
+}</code></pre>
+
+        <p>
+            Any type that implements this interface can be passed to functions like <code>fmt.Println</code> or <code>fmt.Sprintf</code>, and the custom <code>String</code> method will be called to obtain the string representation of the value.
+        </p>
+
+        <h2>Example</h2>
+        <p>
+            Here is an example of how to implement the <code>Stringer</code> interface for a custom type in Go:
+        </p>
+        <pre><code class="language-go">package main
+
+import (
+    "fmt"
+)
+
+// Person is a custom type with two fields
+type Person struct {
+    FirstName string
+    LastName  string
+}
+
+// String method to implement the fmt.Stringer interface
+func (p Person) String() string {
+    return fmt.Sprintf("%s %s", p.FirstName, p.LastName)
+}
+
+func main() {
+    person := Person{
+        FirstName: "John",
+        LastName:  "Doe",
+    }
+
+    // Using the String method to print the person's name
+    fmt.Println(person) // Output: John Doe
+}</code></pre>
+
+        <h2>Benefits</h2>
+        <ol>
+            <li><strong>Customization:</strong> You can control how your types are represented as strings.</li>
+            <li><strong>Consistency:</strong> Ensures a consistent way of formatting across different parts of your application.</li>
+            <li><strong>Integration:</strong> Works seamlessly with Go's <code>fmt</code> package functions like <code>Println</code>, <code>Printf</code>, <code>Sprintf</code>, etc.</li>
+        </ol>
+
+        <h2>Usage in Libraries</h2>
+        <p>
+            The <code>fmt.Stringer</code> interface is widely used in Go's standard library. For instance, when you use <code>fmt.Printf</code> with the <code>%v</code> or <code>%s</code> format specifiers, Go will check if the type implements the <code>Stringer</code> interface and use the <code>String</code> method to format the output.
+        </p>
+
+        <h2>Sample Code: With and Without <code>String()</code> Method</h2>
+        <p>
+            Let's consider the same <code>Request</code> struct for this example.
+        </p>
+
+        <h3><code>Request</code> Struct Definition</h3>
+        <pre><code class="language-go">package main
+
+import (
+    "fmt"
+)
+
+type Request struct {
+    Method string
+    URL    string
+    Header map[string]string
+}</code></pre>
+
+        <h3>Without <code>String()</code> Method</h3>
+        <p>
+            When the <code>String()</code> method is not implemented, the default <code>fmt</code> package output for a <code>Request</code> instance will be less readable.
+        </p>
+        <pre><code class="language-go">func main() {
+    req := Request{
+        Method: "GET",
+        URL:    "/api/v1/resource",
+        Header: map[string]string{"Authorization": "Bearer token"},
+    }
+
+    // Default output without custom String() method
+    fmt.Println("Request:", req)
+}</code></pre>
+
+        <p><strong>Output:</strong></p>
+        <pre><code>Request: {GET /api/v1/resource map[Authorization:Bearer token]}</code></pre>
+
+        <h3>With <code>String()</code> Method</h3>
+        <p>
+            By implementing the <code>String()</code> method for the <code>Request</code> struct, you can customize its string representation to be more readable and informative.
+        </p>
+        <pre><code class="language-go">// Implementing the String() method for the Request struct
+func (r Request) String() string {
+    return fmt.Sprintf("Method: %s, URL: %s, Header: %v", r.Method, r.URL, r.Header)
+}
+
+func main() {
+    req := Request{
+        Method: "GET",
+        URL:    "/api/v1/resource",
+        Header: map[string]string{"Authorization": "Bearer token"},
+    }
+
+    // Custom output with the String() method
+    fmt.Println("Request:", req)
+}</code></pre>
+
+        <p><strong>Output:</strong></p>
+        <pre><code>Request: Method: GET, URL: /api/v1/resource, Header: map[Authorization:Bearer token]</code></pre>
+
+        <h2>Summary</h2>
+        <ul>
+            <li><strong>Without <code>String()</code> Method:</strong> The <code>fmt</code> package uses the default formatting, which can be less readable for complex types.</li>
+            <li><strong>With <code>String()</code> Method:</strong> You can define a custom string representation for your types, making the output more readable and informative.</li>
+        </ul>
+
+        <p>
+            Implementing the <code>String()</code> method is particularly useful for logging, debugging, and displaying user-friendly messages.
+        </p>
+    </div>
+ </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./js/main.js"></script>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>EduNotes</title>
+</head>
+ <body>
+    <h1>Maps in Go</h1>
+    <hr>
+    <h2>Introduction</h2>
+    <p>Maps in Go are a collection of unordered pairs of key-value pairs. They provide an efficient way to store and retrieve data based on keys.</p>
+
+    <h2>Basic Map Example</h2>
+
+    <h3>Definition and Initialization</h3>
+    <p>A map in Go is declared using the syntax <code>map[keyType]valueType</code>. You can initialize a map using the <code>make</code> function or using a map literal.</p>
+
+    <pre><code>package maps
+
+import "fmt"
+
+func Maps() {
+    // Declaring and initializing a map
+    myMap := make(map[string]int)
+    myMap["one"] = 1
+    myMap["two"] = 2
+
+    // Deleting an entry from the map
+    delete(myMap, "one")
+
+    // Accessing a value and checking if it exists
+    val, isFound := myMap["one"]
+
+    // Printing the map and results
+    fmt.Println(myMap)
+    fmt.Println(myMap["one"], val, isFound)
+
+    // Iterating over a map
+    for key, value := range myMap {
+        fmt.Println(key, value)
+    }
+
+    // Initializing a map with a struct{} type for set-like behavior
+    mapStruct := map[string]struct{}{"s1": {}, "s2": {}, "s3": {}, "s4": {}}
+    _, ok := mapStruct["s1"]
+    fmt.Println(mapStruct, ok)
+}
+</code></pre>
+
+    <h3>Explanation</h3>
+    <ul>
+        <li><strong>Definition and Initialization:</strong> Shows how to declare, initialize, and modify a map in Go.</li>
+        <li><strong>Deleting Entries:</strong> Demonstrates how to delete an entry from a map using the <code>delete</code> function.</li>
+        <li><strong>Accessing Values:</strong> Shows how to access values from a map and check if a key exists.</li>
+        <li><strong>Iterating Over a Map:</strong> Illustrates how to iterate over key-value pairs in a map using a <code>for</code> loop with <code>range</code>.</li>
+        <li><strong>Map with Struct{}:</strong> Initializes a map with <code>struct{}</code> to mimic set-like behavior for fast lookups.</li>
+    </ul>
+
+    <h2>Additional Features of Maps in Go</h2>
+
+    <h3>Concurrency Safety</h3>
+    <p>Go maps are not safe for concurrent use by multiple goroutines by default. To safely access maps concurrently, you should use synchronization mechanisms like channels or sync primitives.</p>
+
+    <h3>Nil Maps</h3>
+    <p>A nil map behaves like an empty map when reading, but attempts to write to a nil map will cause a runtime panic.</p>
+
+    <h3>Performance Considerations</h3>
+    <p>Maps in Go provide average-case constant-time complexity for lookups, inserts, and deletes, making them efficient for most use cases.</p>
+
+ </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./js/main.js"></script>
+
+</html>
