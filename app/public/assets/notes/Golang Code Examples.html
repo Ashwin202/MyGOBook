@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Golang Real-Life Project Code Examples</h1>
+
+        <div class="code-example">
+            <h3>HTTP Server</h3>
+            <pre><code>package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello, World!")
+}
+
+func main() {
+    http.HandleFunc("/", handler)
+    fmt.Println("Server is running on http://localhost:8080")
+    http.ListenAndServe(":8080", nil)
+}</code></pre>
+            <div class="output">
+                <strong>Output:</strong>
+                <pre>Server is running on http://localhost:8080</pre>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <h3>REST API</h3>
+            <pre><code>package main
+
+import (
+    "encoding/json"
+    "net/http"
+)
+
+type User struct {
+    ID   int    `json:"id"`
+    Name string `json:"name"`
+}
+
+var users = []User{
+    {ID: 1, Name: "John Doe"},
+    {ID: 2, Name: "Jane Doe"},
+}
+
+func getUsers(w http.ResponseWriter, r *http.Request) {
+    json.NewEncoder(w).Encode(users)
+}
+
+func main() {
+    http.HandleFunc("/users", getUsers)
+    http.ListenAndServe(":8080", nil)
+}</code></pre>
+            <div class="output">
+                <strong>Output:</strong>
+                <pre>[{"id":1,"name":"John Doe"},{"id":2,"name":"Jane Doe"}]</pre>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <h3>Goroutines and Channels</h3>
+            <pre><code>package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func worker(id int, jobs <-chan int, results chan<- int) {
+    for j := range jobs {
+        fmt.Println("worker", id, "started  job", j)
+        time.Sleep(time.Second)
+        fmt.Println("worker", id, "finished job", j)
+        results <- j * 2
+    }
+}
+
+func main() {
+    jobs := make(chan int, 100)
+    results := make(chan int, 100)
+
+    for w := 1; w <= 3; w++ {
+        go worker(w, jobs, results)
+    }
+
+    for j := 1; j <= 5; j++ {
+        jobs <- j
+    }
+    close(jobs)
+
+    for a := 1; a <= 5; a++ {
+        <-results
+    }
+}</code></pre>
+            <div class="output">
+                <strong>Output:</strong>
+                <pre>worker 1 started  job 1
+worker 1 finished job 1
+worker 2 started  job 2
+worker 2 finished job 2
+worker 3 started  job 3
+worker 3 finished job 3
+worker 1 started  job 4
+worker 1 finished job 4
+worker 2 started  job 5
+worker 2 finished job 5</pre>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <h3>File I/O</h3>
+            <pre><code>package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+)
+
+func main() {
+    file, err := os.Open("test.txt")
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    defer file.Close()
+
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        fmt.Println(scanner.Text())
+    }
+
+    if err := scanner.Err(); err != nil {
+        fmt.Println(err)
+    }
+}</code></pre>
+            <div class="output">
+                <strong>Output:</strong>
+                <pre>Contents of test.txt</pre>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <h3>Database Connection (MySQL)</h3>
+            <pre><code>package main
+
+import (
+    "database/sql"
+    "fmt"
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func main() {
+    db, err := sql.Open("mysql", "user:password@tcp(127.0.0.1:3306)/dbname")
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    defer db.Close()
+
+    rows, err := db.Query("SELECT id, name FROM users")
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        var id int
+        var name string
+        err := rows.Scan(&id, &name)
+        if err != nil {
+            fmt.Println(err)
+            return
+        }
+        fmt.Printf("id: %d, name: %s\n", id, name)
+    }
+}</code></pre>
+            <div class="output">
+                <strong>Output:</strong>
+                <pre>id: 1, name: John Doe
+id: 2, name: Jane Doe</pre>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <h3>Unit Testing</h3>
+            <pre><code>package main
+
+import (
+    "testing"
+)
+
+func Add(a, b int) int {
+    return a + b
+}
+
+func TestAdd(t *testing.T) {
+    result := Add(2, 3)
+    expected := 5
+    if result != expected {
+        t.Errorf("Add(2, 3) = %d; want %d", result, expected)
+    }
+}</code></pre>
+            <div class="output">
+                <strong>Output:</strong>
+                <pre>PASS</pre>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <h3>JSON Handling</h3>
+            <pre><code>package main
+
+import (
+    "encoding/json"
+    "fmt"
+)
+
+type User struct {
+    Name  string `json:"name"`
+    Email string `json:"email"`
+}
+
+func main() {
+    jsonString := `{"name":"John Doe", "email":"john.doe@example.com"}`
+    var user User
+    json.Unmarshal([]byte(jsonString), &user)
+    fmt.Printf("Name: %s, Email: %s\n", user.Name, user.Email)
+}</code></pre>
+            <div class="output">
+                <strong>Output:</strong>
+                <pre>Name: John Doe, Email: john.doe@example.com</pre>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+</html>

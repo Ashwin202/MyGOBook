@@ -79,13 +79,16 @@ body{
 .sidebar .nav-link.active {
   color: rgb(215, 10, 30);
 }
+.nav-item .topics-mobile.active {
+  color: rgb(215, 10, 30) !important;
+}
 .sidebar .nav-link:hover {
   background-color: #c9cbcd;
 }
 pre{
   white-space: pre-wrap;
   word-wrap: break-word;
-  background-color: #f7f7f7;
+  background-color: #edebeb;
   font-family: "Inter", sans-serif;
   font-size: 12px;
   font-weight: 400;

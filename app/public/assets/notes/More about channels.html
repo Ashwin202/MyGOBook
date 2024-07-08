@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">More About Goroutines and Channels</h1>
+        
+        <h2>Goroutines</h2>
+        <p>Goroutines are lightweight threads managed by the Go runtime. They are a simple way to achieve concurrent execution in Go programs. Goroutines are created using the `go` keyword.</p>
+        <h4>Example</h4>
+        <pre><code>
+// Example: Goroutines
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func say(s string) {
+    for i := 0; i < 3; i++ {
+        time.Sleep(100 * time.Millisecond)
+        fmt.Println(s)
+    }
+}
+
+func main() {
+    go say("world")
+    say("hello")
+}
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+hello
+world
+hello
+world
+hello
+world
+        </code></pre>
+        
+        <h2>Channels</h2>
+        <p>Channels are a way for goroutines to communicate with each other and synchronize their execution. Channels can be used to send and receive values between goroutines.</p>
+        <h4>Example</h4>
+        <pre><code>
+// Example: Channels
+package main
+
+import "fmt"
+
+func main() {
+    messages := make(chan string)
+
+    go func() {
+        messages <- "ping"
+    }()
+
+    msg := <-messages
+    fmt.Println(msg)
+}
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+ping
+        </code></pre>
+        
+        <h2>Buffered Channels</h2>
+        <p>Buffered channels allow you to specify the capacity of the channel. Send operations to a buffered channel block only when the buffer is full. Similarly, receive operations block only when the buffer is empty.</p>
+        <h4>Example</h4>
+        <pre><code>
+// Example: Buffered Channels
+package main
+
+import "fmt"
+
+func main() {
+    messages := make(chan string, 2)
+
+    messages <- "buffered"
+    messages <- "channel"
+
+    fmt.Println(<-messages)
+    fmt.Println(<-messages)
+}
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+buffered
+channel
+        </code></pre>
+
+        <h2>Channel Directions</h2>
+        <p>You can specify the direction of channels, whether they are meant to send or receive values.</p>
+        <h4>Example</h4>
+        <pre><code>
+// Example: Channel Directions
+package main
+
+import "fmt"
+
+// ping sends a message on the provided channel
+func ping(pings chan<- string, msg string) {
+    pings <- msg
+}
+
+// pong receives a message from the pings channel and sends it on the pongs channel
+func pong(pings <-chan string, pongs chan<- string) {
+    msg := <-pings
+    pongs <- msg
+}
+
+func main() {
+    pings := make(chan string, 1)
+    pongs := make(chan string, 1)
+    
+    ping(pings, "passed message")
+    pong(pings, pongs)
+    
+    fmt.Println(<-pongs)
+}
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+passed message
+        </code></pre>
+
+        <h2>Select</h2>
+        <p>The `select` statement lets a goroutine wait on multiple communication operations. It blocks until one of its cases can proceed, then it executes that case.</p>
+        <h4>Example</h4>
+        <pre><code>
+// Example: Select
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    ch1 := make(chan string)
+    ch2 := make(chan string)
+
+    go func() {
+        time.Sleep(1 * time.Second)
+        ch1 <- "one"
+    }()
+    go func() {
+        time.Sleep(2 * time.Second)
+        ch2 <- "two"
+    }()
+
+    for i := 0; i < 2; i++ {
+        select {
+        case msg1 := <-ch1:
+            fmt.Println("received", msg1)
+        case msg2 := <-ch2:
+            fmt.Println("received", msg2)
+        }
+    }
+}
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+received one
+received two
+        </code></pre>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+</html>

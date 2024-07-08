@@ -1,4 +1,4 @@
-const topics = ['introduction', 'arrays and slices', 'loops', 'maps', 'structs', 'pointers', 'stringer', "channels", "Go routines", "More about channels", "Golang Code Examples"];
+const topics = ['introduction', 'arrays and slices', 'loops', 'maps', 'structs', 'pointers', 'stringer', "channels", "Go routines", "Golang Code Examples"];
 
 $(document).ready(function() {
 
