@@ -66,7 +66,10 @@ body{
 }
 #sidebar{
   /* background: linear-gradient(90deg, #516afc 0%, #35d6f4 100%); */
-  background-color: #fcfafa;
+  background-color: #FAF9F6 !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+  border-radius: 2px;
+  padding: 15px;
 }
 .header{
   display: flex;
@@ -77,13 +80,16 @@ body{
     overflow: hidden !important;
 }
 .sidebar .nav-link.active {
-  color: rgb(215, 10, 30);
+  color: #0e91c9;
 }
 .nav-item .topics-mobile.active {
-  color: rgb(215, 10, 30) !important;
+  color: #0e91c9 !important;
+}
+.nav-item a{
+  color: #151515;
 }
 .sidebar .nav-link:hover {
-  background-color: #c9cbcd;
+  background-color: #e8eef4;
 }
 pre{
   white-space: pre-wrap;

@@ -1,4 +1,4 @@
-const cacheName = 'v1.8'; // Update the cache version number
+const cacheName = 'v2.0'; // Update the cache version number
 
 self.addEventListener('install', event => {
     event.waitUntil(
