@@ -1,22 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/main.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-<body>
+<div>
     <div class="container">
         <h1>Go Routines and Channels</h1>
-
+        <hr>
         <div class="code-example">
             <h3>Go Routines</h3>
-            <p>Go routines are functions or methods that run concurrently with other functions or methods. They are extremely lightweight and easy to use, allowing you to create high-performance concurrent applications in Go.</p>
-            
+            <p>Go routines are functions or methods that run concurrently with other functions or methods. They are
+                extremely lightweight and easy to use, allowing you to create high-performance concurrent applications
+                in Go.</p>
+
             <h4>Example: Basic Go Routine</h4>
             <pre><code>package main
 
@@ -46,7 +37,7 @@ func main() {
 5
 Finished</pre>
             </div>
-            
+
             <h4>Example: Using Channels</h4>
             <pre><code>package main
 
@@ -68,11 +59,13 @@ func main() {
                 <strong>Output:</strong>
                 <pre>3</pre>
             </div>
-            
+
             <h4>Notes:</h4>
             <ul>
-                <li>Go routines are created using the <code>go</code> keyword followed by a function or method call.</li>
-                <li>Channels are used to communicate between Go routines. They can be created using <code>make(chan Type)</code>.</li>
+                <li>Go routines are created using the <code>go</code> keyword followed by a function or method call.
+                </li>
+                <li>Channels are used to communicate between Go routines. They can be created using
+                    <code>make(chan Type)</code>.</li>
                 <li>Data is sent to a channel using the <code>&lt;-</code> operator.</li>
                 <li>Data is received from a channel using the <code>&lt;-</code> operator on the left side.</li>
             </ul>
@@ -80,8 +73,9 @@ func main() {
 
         <div class="code-example">
             <h3>JavaScript Async/Await and Go Equivalent</h3>
-            <p>JavaScript's <code>async</code> and <code>await</code> keywords are used to handle asynchronous operations. In Go, you can achieve similar functionality using Go routines and channels.</p>
-            
+            <p>JavaScript's <code>async</code> and <code>await</code> keywords are used to handle asynchronous
+                operations. In Go, you can achieve similar functionality using Go routines and channels.</p>
+
             <h4>JavaScript Example: Async/Await</h4>
             <pre><code>async function fetchData() {
     let response = await fetch('https://api.example.com/data');
@@ -94,7 +88,7 @@ fetchData();</code></pre>
                 <strong>Output:</strong>
                 <pre>{ id: 1, name: 'John Doe' }</pre>
             </div>
-            
+
             <h4>Go Equivalent</h4>
             <pre><code>package main
 
@@ -137,13 +131,17 @@ func main() {
                 <strong>Output:</strong>
                 <pre>{ ID: 1, Name: "John Doe" }</pre>
             </div>
-            
+
             <h4>Notes:</h4>
             <ul>
-                <li>In JavaScript, <code>async</code> functions return a promise, and the <code>await</code> keyword pauses the execution until the promise is resolved.</li>
-                <li>In Go, Go routines and channels are used to handle asynchronous operations and data synchronization respectively.</li>
-                <li>The `defer` keyword is used to ensure that a function call is performed later in a program's execution, usually for purposes of cleanup. Deferred function calls are executed in LIFO order.</li>
-                <li>HTTP requests in Go can be made using the <code>net/http</code> package, and JSON data can be handled using the <code>encoding/json</code> package.</li>
+                <li>In JavaScript, <code>async</code> functions return a promise, and the <code>await</code> keyword
+                    pauses the execution until the promise is resolved.</li>
+                <li>In Go, Go routines and channels are used to handle asynchronous operations and data synchronization
+                    respectively.</li>
+                <li>The `defer` keyword is used to ensure that a function call is performed later in a program's
+                    execution, usually for purposes of cleanup. Deferred function calls are executed in LIFO order.</li>
+                <li>HTTP requests in Go can be made using the <code>net/http</code> package, and JSON data can be
+                    handled using the <code>encoding/json</code> package.</li>
             </ul>
         </div>
 
@@ -381,10 +379,4 @@ func main() {
             </div>
         </div>
     </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-</html>
+</div>

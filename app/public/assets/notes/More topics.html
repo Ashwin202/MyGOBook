@@ -1,0 +1,83 @@
+<div class="">
+    <h2>JSON Handling in Go</h2>
+    <hr>
+    <div class="">
+        <h3>Unmarshal JSON Example</h3>
+        <li class="mb-1">
+            <code>json.Unmarshal</code>: This function is used to convert JSON data into a Go data structure. It takes
+            JSON data as
+            input (typically a byte slice or a reader) and a pointer to a value in which the decoded JSON will be
+            stored. It automatically maps JSON fields to corresponding Go struct fields based on their names and types.
+        </li>
+        <div class="code">
+            <pre>
+            <code>
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+)
+
+type Person struct {
+    Name string `json:"name"`
+    Age  int    `json:"age"`
+}
+
+func main() {
+    jsonStr := `{"name":"John Doe","age":30}`
+    var person Person
+    err := json.Unmarshal([]byte(jsonStr), &person)
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+    fmt.Println("Input JSON:", jsonStr)
+    fmt.Println("Decoded Person:")
+    fmt.Println("Name:", person.Name)
+    fmt.Println("Age:", person.Age)
+}
+</code>
+</pre>
+        </div>
+    </div>
+
+    <div class="">
+        <h3>Marshal JSON Example</h3>
+        <li class="mb-1">
+            <code>json.Marshal </code>: This function performs the reverse operation of <code>json.Unmarshal</code>. It serializes a Go value into
+            its JSON-encoded form. It's used when you need to convert Go data structures (like structs, maps, or slices)
+            into JSON data.
+        </li>
+        <div class="code">
+            <pre><code>
+                
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+)
+
+type Person struct {
+    Name string `json:"name"`
+    Age  int    `json:"age"`
+}
+
+func main() {
+    person := Person{Name: "Jane Smith", Age: 25}
+    jsonData, err := json.Marshal(person)
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+    fmt.Println("Input Person:")
+    fmt.Println("Name:", person.Name)
+    fmt.Println("Age:", person.Age)
+    fmt.Println("Output JSON:", string(jsonData))
+}
+</code>
+</pre>
+        </div>
+    </div>
+</div>
