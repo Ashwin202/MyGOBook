@@ -1,6 +1,18 @@
-const topics = ['introduction', 'arrays and slices', 'loops', 'maps', 'structs', 'pointers', 'stringer', "channels", "Go routines", "More about channels", "Golang Code Examples"];
+const topics = ['introduction', 'arrays and slices', 'loops', 'maps', 'structs', 'pointers', 'stringer', "channels", "Go routines", "More about channels", "keywords", "More topics", "Golang Code Examples"];
 
 $(document).ready(function() {
+    const navbarMenu = document.getElementById('navbarMenu');
+    const navLinks = document.querySelectorAll('.topics-mobile');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // alert("click")
+            if (navbarMenu.classList.contains('show')) {
+                bootstrap.Collapse.getInstance(navbarMenu).hide();
+            }
+        });
+    });
+
 
 let mobileNavBars = ""
 let desktopNavBars = ""
@@ -38,7 +50,11 @@ function loadContent(file) {
 }
 
 function setActiveLink(element) {
-    console.log({element});
+    setTimeout(function() {
+        if (navbarMenu.classList.contains('show')) {
+            bootstrap.Collapse.getInstance(navbarMenu).hide();
+        }
+    },200)
     links.forEach(link => {
         link.classList.remove('active');
     });
@@ -55,9 +71,33 @@ else{
 setActiveLink(links[0]);
 }
 
+const mybutton = document.getElementById("scrollToTopBtn");
+
+window.onscroll = () => {
+    mybutton.style.display = (document.documentElement.scrollTop > 350) ? "block" : "none";
+};
+
+mybutton.onclick = () => {
+    document.documentElement.scrollTop = 0;
+};
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+    navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+        registration.onupdatefound = function() {
+            var installingWorker = registration.installing;
+            installingWorker.onstatechange = function() {
+                if (installingWorker.state === 'installed') {
+                    if (navigator.serviceWorker.controller) {
+                        if(confirm('New content is available; please refresh.')) {
+                            window.location.reload();
+                        }
+                        console.log('New content is available; please refresh.');
+                    } else {
+                        console.log('Content is cached for offline use.');
+                    }
+                }
+            };
+        }
       console.log('Service Worker registered with scope:', registration.scope);
     }).catch(function(error) {
       console.log('Service Worker registration failed:', error);
