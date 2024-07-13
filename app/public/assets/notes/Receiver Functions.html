@@ -1,0 +1,117 @@
+<div>
+    <div class="container">
+        <h1 class="mb-4">Receiver Functions</h1>
+        <hr>
+        <p>In Go, receiver functions allow methods to be defined on types. This feature is fundamental to Go's approach
+            to object-oriented programming. Receiver functions can be defined for both value receivers and pointer
+            receivers.</p>
+
+        <h2>Example: Value Receiver</h2>
+        <pre><code>package main
+
+import "fmt"
+
+// Define a struct type
+type Rectangle struct {
+    width  int
+    height int
+}
+
+// Define a method with a value receiver
+func (r Rectangle) Area() int {
+    return r.width * r.height
+}
+
+func main() {
+    rect := Rectangle{width: 10, height: 5}
+    fmt.Println("Area:", rect.Area())
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Area: 50</pre>
+        </div>
+
+        <h2>Example: Pointer Receiver</h2>
+        <pre><code>package main
+
+import "fmt"
+
+// Define a struct type
+type Circle struct {
+    radius float64
+}
+
+// Define a method with a pointer receiver
+func (c *Circle) SetRadius(r float64) {
+    c.radius = r
+}
+
+func (c Circle) Area() float64 {
+    return 3.14 * c.radius * c.radius
+}
+
+func main() {
+    c := Circle{}
+    c.SetRadius(5)
+    fmt.Println("Area:", c.Area())
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Area: 78.5</pre>
+        </div>
+
+        <h2>Common Data Structures</h2>
+        <p>Here are some common data structures in Go along with examples:</p>
+
+        <h3>Example: Slice</h3>
+        <pre><code>package main
+
+import "fmt"
+
+func main() {
+    numbers := []int{1, 2, 3, 4, 5}
+    fmt.Println("Numbers:", numbers)
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Numbers: [1 2 3 4 5]</pre>
+        </div>
+
+        <h3>Example: Map</h3>
+        <pre><code>package main
+
+import "fmt"
+
+func main() {
+    capitals := map[string]string{
+        "France": "Paris",
+        "Japan":  "Tokyo",
+    }
+    fmt.Println("Capitals:", capitals)
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Capitals: map[France:Paris Japan:Tokyo]</pre>
+        </div>
+
+        <h3>Example: Struct</h3>
+        <pre><code>package main
+
+import "fmt"
+
+type Person struct {
+    Name string
+    Age  int
+}
+
+func main() {
+    p := Person{Name: "Alice", Age: 30}
+    fmt.Println("Person:", p)
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Person: {Name:Alice Age:30}</pre>
+        </div>
+
+    </div>
+</div>

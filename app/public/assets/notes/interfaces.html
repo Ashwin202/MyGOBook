@@ -1,0 +1,170 @@
+<div>
+    <div class="container">
+        <h1 class="mb-4">Golang Interfaces</h1>
+        <hr>
+        <p>In Go, an interface is a type that specifies a set of method signatures. When a type provides definitions for all the methods in an interface, it is said to implement that interface. Interfaces are a key feature in Go for achieving polymorphism and code reusability.</p>
+
+        <h2>Basic Interface Example</h2>
+        <pre><code>package main
+
+import "fmt"
+
+// Define an interface
+type Describer interface {
+    Describe() string
+}
+
+// Define a struct type
+type Person struct {
+    Name string
+    Age  int
+}
+
+// Implement the Describer interface for Person
+func (p Person) Describe() string {
+    return fmt.Sprintf("%s is %d years old.", p.Name, p.Age)
+}
+
+func main() {
+    p := Person{Name: "Alice", Age: 30}
+    var d Describer = p
+    fmt.Println(d.Describe())
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Alice is 30 years old.</pre>
+        </div>
+
+        <h2>Multiple Implementations</h2>
+        <pre><code>package main
+
+import "fmt"
+
+// Define an interface
+type Shape interface {
+    Area() float64
+}
+
+// Define a struct type for a Rectangle
+type Rectangle struct {
+    Width  float64
+    Height float64
+}
+
+// Implement the Shape interface for Rectangle
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}
+
+// Define a struct type for a Circle
+type Circle struct {
+    Radius float64
+}
+
+// Implement the Shape interface for Circle
+func (c Circle) Area() float64 {
+    return 3.14 * c.Radius * c.Radius
+}
+
+func main() {
+    r := Rectangle{Width: 10, Height: 5}
+    c := Circle{Radius: 7}
+    
+    shapes := []Shape{r, c}
+    
+    for _, shape := range shapes {
+        fmt.Println("Area:", shape.Area())
+    }
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Area: 50
+Area: 153.86</pre>
+        </div>
+
+        <h2>Empty Interface</h2>
+        <p>The empty interface <code>interface{}</code> can be used to accept values of any type. This is similar to using <code>void*</code> in C or <code>Object</code> in Java.</p>
+        <pre><code>package main
+
+import "fmt"
+
+func describe(i interface{}) {
+    fmt.Printf("Type: %T, Value: %v\n", i, i)
+}
+
+func main() {
+    describe(42)
+    describe("hello")
+    describe(true)
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Type: int, Value: 42
+Type: string, Value: hello
+Type: bool, Value: true</pre>
+        </div>
+
+        <h2>Type Assertion</h2>
+        <p>Type assertions provide access to an interface value's underlying concrete value.</p>
+        <pre><code>package main
+
+import "fmt"
+
+func main() {
+    var i interface{} = "hello"
+    
+    s, ok := i.(string)
+    if ok {
+        fmt.Println(s)
+    }
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>hello</pre>
+        </div>
+
+        <h2>Common Use Cases</h2>
+        <p>Interfaces are commonly used to:</p>
+        <ul>
+            <li>Define methods that can be implemented by multiple types.</li>
+            <li>Write functions that can operate on any type that implements a particular set of methods.</li>
+            <li>Achieve polymorphism and code reusability.</li>
+        </ul>
+
+        <h2>Real-Life Example: HTTP Handler</h2>
+        <pre><code>package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+type MyHandler struct{}
+
+func (h *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello, World!")
+}
+
+func main() {
+    handler := &MyHandler{}
+    http.ListenAndServe(":8080", handler)
+}</code></pre>
+        <div class="example-output">
+            <strong>Output:</strong>
+            <pre>Server running at http://localhost:8080
+Visit the URL to see "Hello, World!" message</pre>
+        </div>
+        <h3>Explanation:</h3>
+        <ul>
+            <li><strong>Package main:</strong> This declares the package name. The <code>main</code> package is special in that it defines a standalone executable program.</li>
+            <li><strong>Imports:</strong> We import the <code>fmt</code> package for formatted I/O and the <code>net/http</code> package for HTTP client and server implementations.</li>
+            <li><strong>Type MyHandler:</strong> We define a new type <code>MyHandler</code> which is an empty struct.</li>
+            <li><strong>Method ServeHTTP:</strong> <code>ServeHTTP</code> is a method on <code>MyHandler</code> that takes a <code>http.ResponseWriter</code> and a <code>*http.Request</code>. This method writes "Hello, World!" to the response writer.</li>
+            <li><strong>Function main:</strong> The entry point of the program. Here we create an instance of <code>MyHandler</code> and pass it to <code>http.ListenAndServe</code> to start an HTTP server on port 8080.</li>
+            <li><strong>http.ListenAndServe:</strong> This function starts an HTTP server with a given address and handler. In this case, it starts a server on port 8080 using our <code>MyHandler</code>.</li>
+            <li><strong>Handler Interface:</strong> <code>MyHandler</code> implements the <code>http.Handler</code> interface by defining the <code>ServeHTTP</code> method. <code>&MyHandler{}</code> creates a pointer to a new instance of the MyHandler struct. It means we are creating a new MyHandler object and getting its memory address.</li>
+            <li><strong>Output:</strong> When you run this program and visit <code>http://localhost:8080</code>, the server responds with "Hello, World!".</li>
+        </ul>
+
+    </div>
+</div>

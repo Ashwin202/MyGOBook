@@ -1,4 +1,4 @@
-const topics = ['introduction', 'arrays and slices', 'loops', 'maps', 'structs', 'pointers', 'stringer', "channels", "Go routines", "More about channels", "keywords", "More topics", "Golang Code Examples"];
+const topics = ['introduction', 'arrays and slices', 'loops', 'maps', 'structs', 'pointers', "Receiver Functions", "interfaces", 'stringer', "channels", "Go routines", "More about channels", "keywords", "More topics", "Golang Code Examples"];
 
 $(document).ready(function() {
     const navbarMenu = document.getElementById('navbarMenu');
