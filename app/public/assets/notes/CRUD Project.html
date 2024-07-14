@@ -1,0 +1,289 @@
+<div class="container">
+    <h1>Book Hub</h1>
+    <hr>
+    <p>This document explains the structure and functionality of the "Book Hub" project, a Go application for managing a
+        bookstore. It covers the folder structure, purpose of each file, and key concepts such as pointers, interfaces,
+        and structs.</p>
+
+    <h2>Folder Structure</h2>
+    <ul>
+        <li><code>cmd/main/main.go</code> - Entry file for the application containing the <code>main()</code> function.
+        </li>
+        <li><code>pkg/controllers/controller.go</code> - Contains the controllers for handling HTTP requests.</li>
+        <li><code>pkg/config/app.go</code> - Contains configuration settings, including database connection.</li>
+        <li><code>pkg/routes/routes.go</code> - Defines the application routes for different HTTP methods.</li>
+        <li><code>pkg/models/models.go</code> - Defines the data models and functions for CRUD operations on the
+            database.</li>
+        <li><code>pkg/utills/utills.go</code> - Contains utility functions, such as parsing request bodies.</li>
+        <li><code>.gitignore</code> - Specifies which files and directories to ignore in version control.</li>
+    </ul>
+
+    <h2>Explanation of Each File</h2>
+
+    <h3>cmd/main/main.go</h3>
+    <p>This file is the entry point of the application. It sets up the HTTP server and routes.</p>
+    <pre><code>package main
+
+import(
+    "log"
+    "net/http"
+    "github.com/gorilla/mux"
+    _ "github.com/jinzhu/gorm/dialects/mysql"
+    "github.com/Ashwin202/go-bookhub/pkg/routes"
+)
+
+func main() {
+    r := mux.NewRouter()
+    routes.RegisterBookStoreRoutes(r)
+    http.Handle("/", r)
+    log.Print("Listening on port 9000")
+    log.Fatal(http.ListenAndServe("localhost:9000", r))
+}
+</code></pre>
+    <p>The <code>_ "github.com/jinzhu/gorm/dialects/mysql"</code> import registers the MySQL driver with GORM without
+        directly using it in the code. This is necessary for GORM to interact with MySQL databases.</p>
+
+    <h3>pkg/routes/routes.go</h3>
+    <p>Defines the routes for the application and maps them to their respective controllers.</p>
+    <pre><code>package routes
+
+import (
+    "github.com/gorilla/mux"
+    "github.com/Ashwin202/go-bookhub/pkg/controllers"
+)
+
+var RegisterBookStoreRoutes = func(router *mux.Router) {
+    router.HandleFunc("/book/", controllers.CreateBook).Methods("POST")
+    router.HandleFunc("/book/", controllers.GetAllBooks).Methods("GET")
+    router.HandleFunc("/book/{bookId}", controllers.GetBookById).Methods("GET")
+    router.HandleFunc("/book/{bookId}", controllers.UpdateBookById).Methods("PUT")
+    router.HandleFunc("/book/{bookId}", controllers.DeleteBookById).Methods("DELETE")
+}
+</code></pre>
+
+    <h3>pkg/controllers/controller.go</h3>
+    <p>Handles the logic for each route, interacting with the models and sending responses.</p>
+    <pre><code>package controllers
+
+import (
+	"encoding/json"
+	"net/http"
+	"github.com/gorilla/mux"
+	"github.com/Ashwin202/go-bookhub/pkg/models"
+	"github.com/Ashwin202/go-bookhub/pkg/utills"
+	"strconv"
+)
+
+var CreateBook = func(w http.ResponseWriter, r *http.Request) {
+	var book models.Book
+	utills.ParseBody(r, &book)
+	b := book.CreateBook()
+	marshalledBook, _ := json.Marshal(b)
+	w.WriteHeader(http.StatusCreated)
+	w.Write(marshalledBook)
+}
+
+var GetAllBooks = func (w http.ResponseWriter, r *http.Request)  {
+	allBooks := models.GetAllBooks()
+	marshalledBooks, _ := json.Marshal(allBooks)
+	w.WriteHeader(http.StatusOK)
+	w.Write(marshalledBooks)
+}
+
+var GetBookById = func (w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+	bookID := vars["bookId"]
+	ID, err := strconv.ParseInt(bookID, 0, 0)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("please send correct book id"))
+		return
+	}
+	bookDetails, _ := models.GetBookById(ID)
+	marshalledBook, _ := json.Marshal(bookDetails)
+	w.WriteHeader(http.StatusOK)
+	w.Write(marshalledBook)
+}
+
+var UpdateBookById = func (w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+	bookID := vars["bookId"]
+	var newBookDetails models.Book
+	utills.ParseBody(r, &newBookDetails)
+	ID, err := strconv.ParseInt(bookID, 0, 0)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("please send correct book id"))
+		return
+	}
+	bookDetails, db := models.GetBookById(ID)
+	bookDetails.Name = newBookDetails.Name
+	bookDetails.Author = newBookDetails.Author
+	bookDetails.Publication = newBookDetails.Publication
+
+	db.Save(&bookDetails)
+	marshalledBook, _ := json.Marshal(bookDetails)
+	w.WriteHeader(http.StatusOK)
+	w.Write(marshalledBook)
+}
+
+var DeleteBookById = func (w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+	bookID := vars["bookId"]
+	ID, err := strconv.ParseInt(bookID, 0, 0)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("please send correct book id"))
+		return
+	}
+	bookDetails := models.DeleteBookById(ID)
+	marshalledBook, _ := json.Marshal(bookDetails)
+	w.WriteHeader(http.StatusOK)
+	w.Write(marshalledBook)
+}
+</code></pre>
+
+    <h3>pkg/models/models.go</h3>
+    <p>The <code>models.go</code> file contains the data models and functions for interacting with the database using
+        GORM (an Object Relational Mapper for Go). This is where the application's core data structures and database
+        operations are defined.</p>
+    <p>The <code>models</code> package is responsible for the data structure and database interaction logic. This
+        separation ensures that the business logic is kept separate from the data handling logic, making the code more
+        modular and maintainable.</p>
+    <pre><code>package models
+
+        import (
+            "github.com/jinzhu/gorm"
+            "github.com/Ashwin202/go-bookhub/pkg/config"
+        )
+        
+        var db *gorm.DB
+        
+        type Book struct {	
+            gorm.Model // Embeds the gorm.Model struct from GORM, which adds fields like ID, CreatedAt, UpdatedAt, and DeletedAt to the Book struct. These fields are commonly used for database operations in GORM.
+            Name string `gorm:"" json:"name"` // This is a GORM tag that can be used to specify additional configuration for database operations. In this case, it's empty, meaning there's no additional configuration specified.
+        // Name        string `gorm:"type:varchar(100);unique_index" json:"title"` ==> pecifies that the Name field in the database should be of type VARCHAR with a maximum length of 100 characters. This overrides the default type inferred by GORM.
+            Author string `json:"author"` //This tag specifies that in JSON format, the field should be named author.
+            Publication string `json:"publication"`
+        }
+        
+        func init(){
+            config.Connect()
+            db = config.DB
+            db.AutoMigrate(&Book{}) //auto migrates the Book schema (creates the books table if it doesn't exist), and creates a new book record with the specified fields.
+        }
+        
+        func (b *Book) CreateBook() *Book {
+            db.NewRecord(b) // The NewRecord method in GORM is used to check whether a struct represents a new record that hasn't been persisted to the database yet. 
+            db.Create(&b) // The Create method in GORM is used to insert a new record into the database based on the struct 
+            return b
+        }
+        
+        func GetAllBooks() []Book {
+            var books []Book
+            db.Find(&books)
+            return books
+        }
+        
+        func GetBookById(Id int64) (*Book, *gorm.DB) {
+            var getbook Book
+            db := db.Where("id = ?", Id).Find(&getbook)
+            return &getbook, db
+        }
+        
+        func DeleteBookById(Id int64) Book {
+            var book Book
+            db.Where("id = ?", Id).Delete(&book)
+            return book
+        }
+</code></pre>
+    <p>Key points:</p>
+    <ul>
+        <li><strong>Why this code is under models:</strong> This code defines the structure and behavior of the data
+            models used in the application. Keeping it under the <code>models</code> package ensures a clean separation
+            of concerns.</li>
+        <li><strong>Why the parameters that they accept are pointers:</strong> Passing pointers allows the functions to
+            modify the original data structures rather than working on copies. This is more efficient, especially for
+            large structures, and ensures that changes are reflected across the application.</li>
+        <li><strong>Why the structs are defined like that:</strong> The <code>Book</code> struct includes fields with
+            GORM tags for database mapping and JSON tags for API responses. The embedded <code>gorm.Model</code> struct
+            provides common fields like ID, CreatedAt, UpdatedAt, and DeletedAt.</li>
+        <li><strong>What <code>func init()</code> does:</strong> The <code>init</code> function initializes the database
+            connection and auto-migrates the <code>Book</code> schema. The <code>init</code> function is automatically
+            called when the package is initialized, even though it is not explicitly called in the code.</li>
+    </ul>
+
+    <h3>pkg/utills/utills.go</h3>
+    <p>Contains utility functions, such as parsing request bodies.</p>
+    <pre><code>package utills
+
+import (
+    "encoding/json"
+    "net/http"
+    "io/ioutil"
+)
+
+func ParseBody(r *http.Request, x interface{}) {
+    if body, err := ioutil.ReadAll(r.Body); err == nil {
+        if err := json.Unmarshal([]byte(body), x); err != nil {
+            return
+        }
+    }
+}
+</code></pre>
+
+    <h3>pkg/config/app.go</h3>
+    <p>Handles configuration settings, including connecting to the MySQL database.</p>
+    <pre><code>package config
+
+import (
+    "os"
+    "fmt"
+    "github.com/jinzhu/gorm"
+    _ "github.com/jinzhu/gorm/dialects/mysql"
+    "github.com/joho/godotenv"
+)
+
+var DB *gorm.DB
+
+func Connect() {
+    godotenv.Load()
+    databaseURI := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+        os.Getenv("DATABASE_USER"),
+        os.Getenv("DATABASE_PASSWORD"),
+        os.Getenv("DATABASE_URL"),
+        os.Getenv("DATABASE_NAME"))
+    d, err := gorm.Open("mysql", databaseURI)
+    if err != nil {
+        panic(err)
+    }
+    DB = d
+}
+
+func GetDB() *gorm.DB {
+    return DB
+}
+</code></pre>
+
+    <h2>Key Concepts</h2>
+    <h3>Pointers</h3>
+    <p>Pointers in Go are used to reference memory locations. They are useful for passing large structures to functions
+        without copying them, and for modifying the original values.</p>
+
+    <h3>Interfaces</h3>
+    <p>Interfaces in Go define a set of method signatures that a type must implement. They allow for polymorphism, where
+        different types can be used interchangeably if they implement the same interface.</p>
+
+    <h3>Structs</h3>
+    <p>Structs in Go are used to group together variables under a single name, defining a new data type. They are
+        similar to classes in other programming languages but do not support inheritance.</p>
+
+    <h2>Project Workflow</h2>
+    <p>When the application starts, the <code>main.go</code> file is executed. It sets up the HTTP server and registers
+        the routes. The routes map HTTP requests to the appropriate controller functions, which handle the logic and
+        interact with the models to perform CRUD operations on the database. Utility functions, such as parsing request
+        bodies, are used as needed.</p>
+
+    <p>This project structure helps maintain separation of concerns, making the application more modular and easier to
+        maintain.</p>
+</div>
