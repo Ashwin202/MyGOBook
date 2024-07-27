@@ -1,16 +1,16 @@
-const cacheName = 'v2.7'; // Update the cache version number
+const cacheName = 'v2.8'; // Update the cache version number
 
 // List of resources to cache initially
 const initialResources = [
     './',
-    // '/app/public/index.html',
-    // '/app/public/assets/css/main.css',
-    // '/app/public/assets/js/main.js',
-    // '/app/public/assets/images/goofy72x72.png',
-    // '/app/public/assets/images/goofy128x128.png',
-    // '/app/public/assets/images/goofy144x144.png',
-    // '/app/public/assets/images/goofy192x192.png',
-    // '/app/public/assets/images/goofy512x512.png'
+    '/app/public/index.html',
+    '/app/public/assets/css/main.css',
+    '/app/public/assets/js/main.js',
+    '/app/public/assets/images/goofy72x72.png',
+    '/app/public/assets/images/goofy128x128.png',
+    '/app/public/assets/images/goofy144x144.png',
+    '/app/public/assets/images/goofy192x192.png',
+    '/app/public/assets/images/goofy512x512.png'
 ];
 
 // Install event - cache initial resources
