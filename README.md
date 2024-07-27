@@ -63,20 +63,3 @@ Switch between light and dark themes using the theme toggle button.
    npm start
    ```
 
-### Deployment
-To deploy MyGOBook to Firebase:
-
-1. Install Firebase CLI if you haven’t already:
-   ```bash
-   npm install -g firebase-tools
-   ```
-
-2. Initialize Firebase in your project directory:
-   ```bash
-   firebase init
-   ```
-
-3. Deploy to Firebase:
-   ```bash
-   firebase deploy
-   ```
