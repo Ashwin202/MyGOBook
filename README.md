@@ -2,6 +2,13 @@
 
 Welcome to MyGOBook, a Progressive Web App (PWA) designed to provide study materials, including notes on Golang. This app offers a clean user interface and offline capabilities, making it easier for you to access study resources anytime, anywhere.
 
+<div align="center">
+  <a rel="nofollow" href="https://paveloom.github.io/git/">
+    <img width="30%" src="app/public/assets/images/MyGoBookDemo.gif">
+  </a>
+</div>
+
+
 ## Features
 
 - **Offline Access**: MyGOBook allows you to access study materials even when you are offline.
@@ -28,38 +35,4 @@ MyGOBook is a PWA, which means you can install it on your device for a native ap
 1. Open the app in your mobile browser (preferably Chrome for Android).
 2. Tap on the menu button (three dots) in the top-right corner.
 3. Select "Add to Home screen" and follow the instructions.
-
-## Usage
-
-### Home Page
-The home page provides quick access to all available study materials and notes.
-
-### Search
-Use the search bar at the top of the page to quickly find specific topics or notes.
-
-### Themes
-Switch between light and dark themes using the theme toggle button.
-
-## Development
-
-### Prerequisites
-- Node.js
-- Firebase CLI
-
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/mygobook.git
-   cd mygobook
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm start
-   ```
 
